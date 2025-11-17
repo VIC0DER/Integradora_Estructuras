@@ -12,36 +12,36 @@ import java.util.List;
 @RequestMapping("/api/citas")
 @CrossOrigin(origins = "*")
 public class CitaController {
-
-    private final CitaService citaService;
-    private final PacienteService pacienteService;
+    private final CitaService citaService; // servicio de citas
+    private final PacienteService pacienteService; // servicio de pacientes
 
     public CitaController(CitaService citaService, PacienteService pacienteService) {
-        this.citaService = citaService;
-        this.pacienteService = pacienteService;
+        this.citaService = citaService; // asigna servicio de citas
+        this.pacienteService = pacienteService; // asigna servicio de pacientes
     }
 
     @GetMapping
-    public List<Cita> listar() { return citaService.findAll(); }
+    public List<Cita> listar() { return citaService.findAll(); } // lista todas las citas
 
     @PostMapping
     public ResponseEntity<?> crear(@RequestBody Cita cita) {
-        // validar paciente existe
+        // valida que el paciente exista
         if (cita.getPacienteCurp() == null || pacienteService.findByCurp(cita.getPacienteCurp()) == null) {
-            return ResponseEntity.badRequest().body("Paciente no encontrado por CURP");
+            return ResponseEntity.badRequest().body("Paciente no encontrado por CURP"); // error si no existe
         }
-        Cita saved = citaService.save(cita);
-        return ResponseEntity.ok(saved);
+        System.out.println(cita); // imprime cita para depuración
+        Cita saved = citaService.save(cita); // guarda cita
+        return ResponseEntity.ok(saved); // devuelve cita guardada
     }
 
     @PostMapping("/atender-siguiente")
     public ResponseEntity<?> atender() {
-        Cita atendida = citaService.atenderSiguiente();
-        return atendida == null ? ResponseEntity.noContent().build() : ResponseEntity.ok(atendida);
+        Cita atendida = citaService.atenderSiguiente(); // atiende siguiente cita
+        return atendida == null ? ResponseEntity.noContent().build() : ResponseEntity.ok(atendida); // respuesta según resultado
     }
 
     @GetMapping("/cola/size")
     public ResponseEntity<Integer> colaSize() {
-        return ResponseEntity.ok(citaService.colaSize());
+        return ResponseEntity.ok(citaService.colaSize()); // devuelve tamaño de la cola
     }
 }

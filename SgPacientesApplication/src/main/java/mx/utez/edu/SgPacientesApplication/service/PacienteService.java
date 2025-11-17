@@ -12,58 +12,60 @@ import java.util.stream.Collectors;
 @Service
 public class PacienteService {
 
-    private final List<Paciente> pacientes = new ArrayList<>();
-    private final Map<String, Paciente> mapPorCurp = new HashMap<>();
-    private final Map<String, List<HistorialEntry>> historiales = new HashMap<>();
-    private final Pila<HistorialEntry> pilaGlobal = new Pila<>();
-    private long seq = 1L;
+    private final List<Paciente> pacientes = new ArrayList<>(); // lista de pacientes
+    private final Map<String, Paciente> mapPorCurp = new HashMap<>(); // mapa por CURP
+    private final Map<String, List<HistorialEntry>> historiales = new HashMap<>(); // historiales por CURP
+    private final Pila<HistorialEntry> pilaGlobal = new Pila<>(); // pila global
+    private long seq = 1L; // id incremental
 
     public Paciente save(Paciente p) {
-        if (p.getId() == null) p.setId(seq++);
+        if (p.getId() == null) p.setId(seq++); // asigna id
 
-        // Si curp ya existe, actualizar (remover versión anterior)
-        Paciente prev = mapPorCurp.get(p.getCurp());
+
+        Paciente prev = mapPorCurp.get(p.getCurp()); // busca previo
         if (prev != null) {
-            pacientes.remove(prev);
+            pacientes.remove(prev); // elimina previo
         }
 
-        pacientes.add(p);
-        mapPorCurp.put(p.getCurp(), p);
 
-        HistorialEntry e = new HistorialEntry(p.getCurp(), LocalDateTime.now(), "Paciente registrado/actualizado");
-        historiales.computeIfAbsent(p.getCurp(), k -> new ArrayList<>()).add(e);
-        pilaGlobal.push(e);
-        return p;
+        pacientes.add(p); // agrega paciente
+        mapPorCurp.put(p.getCurp(), p); // actualiza mapa
+
+
+        HistorialEntry e = new HistorialEntry(p.getCurp(), LocalDateTime.now(), "Paciente registrado/actualizado"); // crea historial
+        historiales.computeIfAbsent(p.getCurp(), k -> new ArrayList<>()).add(e); // agrega historial
+        pilaGlobal.push(e); // agrega a pila global
+        return p; // devuelve
     }
 
     public Paciente findByCurp(String curp) {
-        return mapPorCurp.get(curp);
+        return mapPorCurp.get(curp); // busca por CURP
     }
 
     public List<Paciente> findAll() {
-        return new ArrayList<>(pacientes);
+        return new ArrayList<>(pacientes); // devuelve copia
     }
 
     public boolean deleteById(Long id) {
-        Optional<Paciente> opt = pacientes.stream().filter(p -> Objects.equals(p.getId(), id)).findFirst();
-        if (opt.isEmpty()) return false;
+        Optional<Paciente> opt = pacientes.stream().filter(p -> Objects.equals(p.getId(), id)).findFirst(); // busca
+        if (opt.isEmpty()) return false; // no encontrado
         Paciente p = opt.get();
-        pacientes.remove(p);
-        mapPorCurp.remove(p.getCurp());
-        historiales.remove(p.getCurp());
-        HistorialEntry e = new HistorialEntry(p.getCurp(), LocalDateTime.now(), "Paciente eliminado");
-        pilaGlobal.push(e);
-        return true;
+        pacientes.remove(p); // elimina
+        mapPorCurp.remove(p.getCurp()); // elimina del mapa
+        historiales.remove(p.getCurp()); // elimina historial
+        HistorialEntry e = new HistorialEntry(p.getCurp(), LocalDateTime.now(), "Paciente eliminado"); // registra eliminación
+        pilaGlobal.push(e); // agrega a pila
+        return true; // éxito
     }
 
     public List<HistorialEntry> getHistorial(String curp) {
-        return historiales.getOrDefault(curp, Collections.emptyList())
+        return historiales.getOrDefault(curp, Collections.emptyList()) // obtiene lista
                 .stream()
-                .sorted(Comparator.comparing(HistorialEntry::getFecha).reversed())
-                .collect(Collectors.toList());
+                .sorted(Comparator.comparing(HistorialEntry::getFecha).reversed()) // ordena desc
+                .collect(Collectors.toList()); // retorna lista
     }
 
     public HistorialEntry popUltimoHistorialDemo() {
-        return pilaGlobal.pop();
+        return pilaGlobal.pop(); // saca último
     }
 }

@@ -12,45 +12,47 @@ import java.util.List;
 @RequestMapping("/api/pacientes")
 @CrossOrigin(origins = "*")
 public class PacienteController {
-
-    private final PacienteService service;
+    private final PacienteService service; // servicio de pacientes
 
     public PacienteController(PacienteService service) {
-        this.service = service;
+        this.service = service; // asigna servicio
     }
 
-    @GetMapping
-    public List<Paciente> listar() { return service.findAll(); }
+
+    @GetMapping("")
+    public List<Paciente> listar() { return service.findAll(); } // lista pacientes
+
 
     @GetMapping("/{curp}")
     public ResponseEntity<Paciente> buscarPorCurp(@PathVariable String curp) {
-        Paciente p = service.findByCurp(curp);
-        return p == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(p);
+        Paciente p = service.findByCurp(curp); // busca por CURP
+        return p == null ? ResponseEntity.notFound().build() : ResponseEntity.ok(p); // respuesta según hallazgo
     }
 
     @PostMapping
     public ResponseEntity<Paciente> crear(@RequestBody Paciente paciente) {
         if (paciente.getCurp() == null || paciente.getCurp().isBlank()) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().build(); // valida curp
         }
-        Paciente saved = service.save(paciente);
-        return ResponseEntity.ok(saved);
+        System.out.println(paciente); // depuración
+        Paciente saved = service.save(paciente); // guarda paciente
+        return ResponseEntity.ok(saved); // devuelve guardado
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(@PathVariable Long id) {
-        boolean ok = service.deleteById(id);
-        return ok ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
+        boolean ok = service.deleteById(id); // elimina por id
+        return ok ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build(); // respuesta
     }
 
     @GetMapping("/{curp}/historial")
     public List<HistorialEntry> historial(@PathVariable String curp) {
-        return service.getHistorial(curp);
+        return service.getHistorial(curp); // devuelve historial del paciente
     }
 
     @PostMapping("/historial/pop")
     public ResponseEntity<HistorialEntry> popHistorial() {
-        HistorialEntry e = service.popUltimoHistorialDemo();
-        return e == null ? ResponseEntity.noContent().build() : ResponseEntity.ok(e);
+        HistorialEntry e = service.popUltimoHistorialDemo(); // saca último historial global
+        return e == null ? ResponseEntity.noContent().build() : ResponseEntity.ok(e); // respuesta
     }
 }

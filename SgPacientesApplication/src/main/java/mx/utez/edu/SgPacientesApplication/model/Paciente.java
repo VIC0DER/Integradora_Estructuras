@@ -15,6 +15,19 @@ public class Paciente {
 
     public Paciente() {}
 
+    public Paciente(String nombre, String apellidos, String sexo, String nacimiento, String curp, String nss, String telefono, String tipoSangre, String medicamentos, boolean alergias) {
+        this.nombre = nombre;
+        this.apellidos = apellidos;
+        this.sexo = sexo;
+        this.nacimiento = nacimiento;
+        this.curp = curp;
+        this.nss = nss;
+        this.telefono = telefono;
+        this.tipoSangre = tipoSangre;
+        this.medicamentos = medicamentos;
+        this.alergias = alergias;
+    }
+
     // Getters & setters
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -48,4 +61,21 @@ public class Paciente {
 
     public boolean isAlergias() { return alergias; }
     public void setAlergias(boolean alergias) { this.alergias = alergias; }
+
+    @Override
+    public String toString() {
+        return "Paciente{" +
+                "id=" + id +
+                ", nombre='" + nombre + '\'' +
+                ", apellidos='" + apellidos + '\'' +
+                ", sexo='" + sexo + '\'' +
+                ", nacimiento='" + nacimiento + '\'' +
+                ", curp='" + curp + '\'' +
+                ", nss='" + nss + '\'' +
+                ", telefono='" + telefono + '\'' +
+                ", tipoSangre='" + tipoSangre + '\'' +
+                ", medicamentos='" + medicamentos + '\'' +
+                ", alergias=" + alergias +
+                '}';
+    }
 }
