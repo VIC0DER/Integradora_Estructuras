@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <title>Registrar Paciente</title>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Logo</a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="nav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="registro.html">Registro</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="citas.html">Agendar Cita</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <form id="formRegistro">
+            <h3>Datos del Paciente</h3>
+            <hr>
+
+            <div class="row">
+                <div class="col-4 mb-3">
+                    <label class="form-label">Nombre(s): *</label>
+                    <input class="form-control" id="inputNombre">
+                </div>
+
+                <div class="col-4 mb-3">
+                    <label class="form-label">Apellidos: *</label>
+                    <input class="form-control" id="inputApellidos">
+                </div>
+
+                <div class="col-2 d-flex align-items-center">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="radioSex" value="M">
+                        <label class="form-check-label">Masculino</label>
+                    </div>
+                </div>
+
+                <div class="col-2 d-flex align-items-center">
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="radioSex" value="F">
+                        <label class="form-check-label">Femenino</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="col-4 mb-3">
+                    <label class="form-label">Fecha de nacimiento: *</label>
+                    <input class="form-control" type="date" id="inputNacimiento">
+                </div>
+
+                <div class="col-4 mb-3">
+                    <label class="form-label">CURP: *</label>
+                    <a href="https://www.gob.mx/curp/" target="_blank">Consultar CURP</a>
+                    <input class="form-control" id="inputCurp">
+                </div>
+
+                <div class="col-4 mb-3">
+                    <label class="form-label">NSS: *</label>
+                    <a href="https://www.imss.gob.mx/tramites/imss02008" target="_blank">Consultar NSS</a>
+                    <input class="form-control" id="inputNSS">
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-4 mb-3">
+                    <label class="form-label">Número telefónico: *</label>
+                    <input class="form-control" id="inputTelefono">
+                </div>
+            </div>
+
+            <h3>Datos clínicos</h3>
+            <hr>
+
+            <div class="row">
+                <div class="col-4 mb-3">
+                    <label class="form-label">Tipo de sangre *</label>
+                    <select class="form-select" id="selectTipoSangre">
+                        <option selected>Selecciona una opción</option>
+                        <option>A+</option><option>A-</option>
+                        <option>B+</option><option>B-</option>
+                        <option>AB+</option><option>AB-</option>
+                        <option>O+</option><option>O-</option>
+                    </select>
+                </div>
+
+                <div class="col-4 mb-3">
+                    <label class="form-label">Medicamentos que toma</label>
+                    <input class="form-control" id="inputMedicamentos">
+                </div>
+
+                <div class="col-4 mb-3 d-flex align-items-center">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="checkAlergia">
+                        <label class="form-check-label">Alergia a medicamentos</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col text-end mb-3">
+                    <button type="submit" class="btn btn-primary">Registrar</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+
+    <script src="scripts/registro.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

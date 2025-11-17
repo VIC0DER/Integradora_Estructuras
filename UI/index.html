@@ -1,114 +1,16 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-    <title>Document</title>
+  <meta charset="utf-8" />
+  <title>SGPacientes - Menú</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">Logo</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="index.html">Registro</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="citas.html">Agendar cita</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-
-
-    <div class="container">
-        <form>
-            <h3>Datos del paciente</h3><hr>
-            <div class="row">
-                <div class="col-4 mb-3">
-                    <label class="form-label" for="inputNombre">Nombre(s): *</label>
-                    <input class="form-control" type="text" name="inputNombre" id="inputNombre">
-                </div>
-                <div class="col-4 mb-3">
-                    <label class="form-label" for="inputApellidos">Apellidos: *</label>
-                    <input class="form-control" type="text" name="inputApellidos" id="inputApellidos">
-                </div>
-                <div class="col-2 d-flex align-items-center">
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="radioSex" id="radioSexM" >
-                        <label class="form-check-label" for="radioSexM">Masculino</label>
-                    </div>
-
-                </div>
-                <div class="col-2 d-flex align-items-center">
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="radioSex" id="radioSexF" >
-                        <label class="form-check-label" for="radioSexF">Femenino</label>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-4 mb-3">
-                    <label class="form-label" for="inputNacimiento">Fecha de nacimiento: *</label>
-                    <input class="form-control" type="date" name="inputNacimiento" id="inputNacimiento">
-                </div>
-                <div class="col-4 mb-3">
-                    <label class="form-label" for="inputCurp">CURP: *</label>
-                    <a href="https://www.gob.mx/curp/" target="_blank">¿No conoces la CURP? Consúltala aquí</a>
-                    <input class="form-control" type="text" name="inputCurp" id="input">
-                </div>
-                <div class="col-4 mb-3">
-                    <label class="form-label" for="inputNSS">NSS: *</label>
-                    <a href="https://www.imss.gob.mx/tramites/imss02008" target="_blank">¿No conoces el NSS? Consúltalo aquí</a>
-                    <input class="form-control" type="text" name="inputNSS" id="inputNSS">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-4 mb-3">
-                    <label class="form-label" for="inputTelefono">Número Telefónico: *</label>
-                    <input class="form-control" type="text" name="inputTelefono" id="inputTelefono">
-                </div>
-            </div>
-            <h3>Datos clínicos</h3><hr>
-            <div class="row">
-                <div class="col-4 mb-3">
-                    <label class="form-label" for="selectTipoSangre">Tipo de sangre: *</label>
-                    <select class="form-select" name="selectTipoSangre" id="selectTipoSangre">
-                        <option value="" selected>Selecciona una opción</option>
-                        <option value="A+">A+</option>
-                        <option value="A-">A-</option>
-                        <option value="B+">B+</option>
-                        <option value="B-">B-</option>
-                        <option value="AB+">AB+</option>
-                        <option value="AB-">AB-</option>
-                        <option value="O+">O+</option>
-                        <option value="O-">O-</option>
-                    </select>
-                </div>
-                <div class="col-4 mb-3">
-                    <label class="form-label" for="inputMedicamentos">Medicamentos que toma: </label>
-                    <input class="form-control" type="text" name="inputMedicamentos" id="inputMedicamentos">
-                </div>
-                <div class="col-4 mb-3 d-flex align-items-center">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" name="checkAlergia" id="checkAlergia" >
-                        <label class="form-check-label" for="checkAlergia">Alergias a medicamentos</label>
-                    </div>
-                </div>    
-            </div>
-            <div class="row">
-                <div class="col mb-3 text-end">
-                    <button class="btn btn-primary" type="submit">Registrar</button>
-                </div>
-            </div>
-        </form>
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+<body class="p-4">
+  <div class="container">
+    <h1>SGPacientes - Demo</h1>
+    <a class="btn btn-primary mb-2" href="registro.html">Gestionar pacientes</a>
+    <a class="btn btn-secondary mb-2" href="citas.html">Gestionar citas</a>
+    <a class="btn btn-info mb-2" href="historial.html">Ver historial demo</a>
+  </div>
 </body>
 </html>
