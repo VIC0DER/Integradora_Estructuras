@@ -3,6 +3,7 @@ package mx.utez.edu.SgPacientesApplication.controller;
 import mx.utez.edu.SgPacientesApplication.model.HistorialEntry;
 import mx.utez.edu.SgPacientesApplication.model.Paciente;
 import mx.utez.edu.SgPacientesApplication.service.PacienteService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,7 @@ public class PacienteController {
 
 
     @GetMapping("")
-    public List<Paciente> listar() { return service.findAll(); } // lista pacientes
+    public ResponseEntity<Object> listar() { return new ResponseEntity<>(service.findAll(), HttpStatus.OK); } // lista pacientes
 
 
     @GetMapping("/{curp}")

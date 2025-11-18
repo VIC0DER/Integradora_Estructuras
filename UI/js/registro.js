@@ -27,3 +27,49 @@ document.getElementById("formRegistro").addEventListener("submit", async (e) => 
         alert("Error al registrar paciente.");
     }
 });
+document.addEventListener("DOMContentLoaded", cargarPacientes);
+const dataTableBody = document.getElementById('dataTableBody');
+dataTableBody.addEventListener('click', async (event) => {
+    const eventTarget = event.target;
+    if(eventTarget.classList.contains("btnEliminar")){
+        const id = eventTarget.getAttribute("data-id");
+        console.log("Eliminar persona con id "+id);
+
+        const respuesta = await fetch(
+        `http://localhost:8080/api/pacientes/${id}`,
+            {
+                method: 'DELETE',
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            }
+        )
+    }
+});
+let tablePacientes = null;
+async function cargarPacientes() {
+    tablePacientes = new DataTable('#dataTablePacientes', {
+        ajax: {
+            url: "http://localhost:8080/api/pacientes",
+            dataSrc: "listaPacientes"
+        },
+        columns: [
+            {
+                data: null,
+                render: (data, type, row, meta) => {
+                    return meta.row + 1
+                }
+            },
+            { data: "nombre" },
+            { data: "apellidos"},
+            { data: "sexo" },
+            { data: "tipoSangre"},
+            {
+                data: null,
+                render: (data, type, row, meta) => {
+                    return `<button class="btn btn-danger btnEliminar" data-id="${row.id}">Eliminar</button>`
+                }
+            },
+        ]
+    })
+}

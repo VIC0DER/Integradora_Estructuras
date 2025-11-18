@@ -2,6 +2,7 @@ package mx.utez.edu.SgPacientesApplication.service;
 
 import mx.utez.edu.SgPacientesApplication.model.HistorialEntry;
 import mx.utez.edu.SgPacientesApplication.model.Paciente;
+import mx.utez.edu.SgPacientesApplication.structures.ListaSimple;
 import mx.utez.edu.SgPacientesApplication.structures.Pila;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +13,7 @@ import java.util.stream.Collectors;
 @Service
 public class PacienteService {
 
-    private final List<Paciente> pacientes = new ArrayList<>(); // lista de pacientes
+    private final ListaSimple<Paciente> pacientes = new ListaSimple<>(); // lista de pacientes
     private final Map<String, Paciente> mapPorCurp = new HashMap<>(); // mapa por CURP
     private final Map<String, List<HistorialEntry>> historiales = new HashMap<>(); // historiales por CURP
     private final Pila<HistorialEntry> pilaGlobal = new Pila<>(); // pila global
@@ -42,8 +43,10 @@ public class PacienteService {
         return mapPorCurp.get(curp); // busca por CURP
     }
 
-    public List<Paciente> findAll() {
-        return new ArrayList<>(pacientes); // devuelve copia
+    public Map<String, Object> findAll() {
+        Map<String, Object> mapResponse = new HashMap<>();
+        mapResponse.put("listaPacientes", pacientes);
+        return mapResponse; // devuelve copia
     }
 
     public boolean deleteById(Long id) {
@@ -55,6 +58,7 @@ public class PacienteService {
         historiales.remove(p.getCurp()); // elimina historial
         HistorialEntry e = new HistorialEntry(p.getCurp(), LocalDateTime.now(), "Paciente eliminado"); // registra eliminación
         pilaGlobal.push(e); // agrega a pila
+        System.out.println(pacientes);
         return true; // éxito
     }
 
