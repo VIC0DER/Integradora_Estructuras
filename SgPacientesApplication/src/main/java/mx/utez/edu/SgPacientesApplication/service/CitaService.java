@@ -2,15 +2,13 @@ package mx.utez.edu.SgPacientesApplication.service;
 
 import mx.utez.edu.SgPacientesApplication.model.Cita;
 import mx.utez.edu.SgPacientesApplication.structures.Cola;
+import mx.utez.edu.SgPacientesApplication.structures.ListaSimple;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class CitaService {
 
-    private final List<Cita> citas = new ArrayList<>(); // lista de citas
+    private final ListaSimple<Cita> citas = new ListaSimple<>(); // lista de citas
     private final Cola<String> colaAtencion = new Cola<>(); // cola de atención por curp
     private long seq = 1L; // secuencia de ids
 
@@ -22,8 +20,8 @@ public class CitaService {
         return c; // devuelve cita
     }
 
-    public List<Cita> findAll() {
-        return new ArrayList<>(citas); // devuelve copia de lista
+    public ListaSimple<Cita> findAll() {
+        return citas; // devuelve copia de lista
     }
 
     public Cita atenderSiguiente() {

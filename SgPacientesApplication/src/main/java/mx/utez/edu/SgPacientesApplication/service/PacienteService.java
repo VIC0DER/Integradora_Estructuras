@@ -3,6 +3,7 @@ package mx.utez.edu.SgPacientesApplication.service;
 import mx.utez.edu.SgPacientesApplication.model.HistorialEntry;
 import mx.utez.edu.SgPacientesApplication.model.Paciente;
 import mx.utez.edu.SgPacientesApplication.structures.ListaSimple;
+import mx.utez.edu.SgPacientesApplication.structures.MyHashMap;
 import mx.utez.edu.SgPacientesApplication.structures.Pila;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,7 @@ import java.util.stream.Collectors;
 public class PacienteService {
 
     private final ListaSimple<Paciente> pacientes = new ListaSimple<>(); // lista de pacientes
-    private final Map<String, Paciente> mapPorCurp = new HashMap<>(); // mapa por CURP
+    private final MyHashMap<String, Paciente> mapPorCurp = new MyHashMap<>(); // mapa por CURP
     private final Map<String, List<HistorialEntry>> historiales = new HashMap<>(); // historiales por CURP
     private final Pila<HistorialEntry> pilaGlobal = new Pila<>(); // pila global
     private long seq = 1L; // id incremental
@@ -43,8 +44,8 @@ public class PacienteService {
         return mapPorCurp.get(curp); // busca por CURP
     }
 
-    public Map<String, Object> findAll() {
-        Map<String, Object> mapResponse = new HashMap<>();
+    public MyHashMap<String, Object> findAll() {
+        MyHashMap<String, Object> mapResponse = new MyHashMap<>();
         mapResponse.put("listaPacientes", pacientes);
         return mapResponse; // devuelve copia
     }

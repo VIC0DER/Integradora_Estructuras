@@ -3,10 +3,9 @@ package mx.utez.edu.SgPacientesApplication.controller;
 import mx.utez.edu.SgPacientesApplication.model.Cita;
 import mx.utez.edu.SgPacientesApplication.service.CitaService;
 import mx.utez.edu.SgPacientesApplication.service.PacienteService;
+import mx.utez.edu.SgPacientesApplication.structures.ListaSimple;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/citas")
@@ -21,7 +20,7 @@ public class CitaController {
     }
 
     @GetMapping
-    public List<Cita> listar() { return citaService.findAll(); } // lista todas las citas
+    public ListaSimple<Cita> listar() { return citaService.findAll(); } // lista todas las citas
 
     @PostMapping
     public ResponseEntity<?> crear(@RequestBody Cita cita) {

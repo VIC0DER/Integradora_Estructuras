@@ -23,6 +23,7 @@ document.getElementById("formRegistro").addEventListener("submit", async (e) => 
     if (response.ok) {
         alert("Paciente registrado con éxito.");
         e.target.reset();
+        cargarPacientes();
     } else {
         alert("Error al registrar paciente.");
     }
@@ -44,10 +45,23 @@ dataTableBody.addEventListener('click', async (event) => {
                 },
             }
         )
+        if(respuesta.ok){
+            cargarPacientes();
+        }
     }
 });
 let tablePacientes = null;
 async function cargarPacientes() {
+    /* 
+    Comprueba si la tabla ya ha sido inicializada y la destruye para no tener conflictos al recargar los datos.
+    Esta práctica puede afectar el rendimiento si los datos son muy grandes,
+    pero es útil para recargar completamente la tabla utilizando JQuery DataTables.
+    */   
+    if ( $.fn.dataTable.isDataTable( '#dataTablePacientes' ) ) {
+        tablePacientes = $('#dataTablePacientes').DataTable();
+        tablePacientes.destroy();
+    }
+    // Inicializa la tabla con los datos obtenidos de la API
     tablePacientes = new DataTable('#dataTablePacientes', {
         ajax: {
             url: "http://localhost:8080/api/pacientes",
