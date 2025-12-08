@@ -3,7 +3,9 @@ package mx.utez.edu.SgPacientesApplication.controller;
 import mx.utez.edu.SgPacientesApplication.model.Cita;
 import mx.utez.edu.SgPacientesApplication.service.CitaService;
 import mx.utez.edu.SgPacientesApplication.service.PacienteService;
-import mx.utez.edu.SgPacientesApplication.structures.ListaSimple;
+import mx.utez.edu.SgPacientesApplication.structures.MyHashMap;
+import mx.utez.edu.SgPacientesApplication.util.HttpStatusUtil;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,10 +21,18 @@ public class CitaController {
         this.pacienteService = pacienteService; // asigna servicio de pacientes
     }
 
-    @GetMapping
-    public ListaSimple<Cita> listar() { return citaService.findAll(); } // lista todas las citas
+    @GetMapping("")
+    public ResponseEntity<Object> listar() {
+        return new ResponseEntity<>(citaService.findAll(), HttpStatus.OK);
+    }
+    @GetMapping("{idPaciente}")
+    public ResponseEntity<Object> listarPorPaciente(@PathVariable Long idPaciente) {
+        MyHashMap<String, Object> response = citaService.buscarPorPaciente(idPaciente);
+        int code = (int) response.get("code");
+        return new ResponseEntity<>(response, HttpStatusUtil.getStatus(code));
+    }
 
-    @PostMapping
+    @PostMapping("")
     public ResponseEntity<?> crear(@RequestBody Cita cita) {
         // valida que el paciente exista
         if (cita.getPacienteCurp() == null || pacienteService.findByCurp(cita.getPacienteCurp()) == null) {
@@ -33,14 +43,14 @@ public class CitaController {
         return ResponseEntity.ok(saved); // devuelve cita guardada
     }
 
-    @PostMapping("/atender-siguiente")
+    @PutMapping("/atender-siguiente")
     public ResponseEntity<?> atender() {
-        Cita atendida = citaService.atenderSiguiente(); // atiende siguiente cita
-        return atendida == null ? ResponseEntity.noContent().build() : ResponseEntity.ok(atendida); // respuesta según resultado
+        MyHashMap<String, Object> response = citaService.atenderSiguiente();
+        int code = (int) response.get("code");
+        HttpStatus status = HttpStatusUtil.getStatus(code);
+        return new  ResponseEntity<>(response, status);
     }
 
-    @GetMapping("/cola/size")
-    public ResponseEntity<Integer> colaSize() {
-        return ResponseEntity.ok(citaService.colaSize()); // devuelve tamaño de la cola
-    }
+
+
 }

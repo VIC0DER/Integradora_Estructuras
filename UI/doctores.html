@@ -6,13 +6,12 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.datatables.net/2.3.4/css/dataTables.dataTables.css" />
     <link rel="stylesheet" href="css/styles.css"/>
-    <title>Agendar Cita</title>
+    <title>Registrar Doctor</title>
 </head>
 <body>
 
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
         <div class="container-fluid">
-
             <a class="navbar-brand" href="#">Logo</a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
@@ -25,71 +24,44 @@
                         <a class="nav-link" href="registro.html">Pacientes</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="citas.html">Agendar Cita</a>
+                        <a class="nav-link" href="citas.html">Agendar Cita</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="urgencias.html">Urgencias</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="doctores.html">Doctores</a>
+                        <a class="nav-link active" href="doctores.html">Doctores</a>
                     </li>
                 </ul>
             </div>
-
         </div>
     </nav>
-
     <div class="container" id="formContainer">
-        <form id="formCita">
-
-            <h3>Agendar Cita</h3>
-            <p>
-                Para poder agendar cita es necesario que el paciente esté previamente
-                registrado. Si no lo está, regístrate <a href="registro.html">aquí</a>.
-            </p>
+        <form id="formRegistro">
+            <h3>Registrar Doctor</h3>
             <hr>
 
             <div class="row">
-
-                <div class="col-4 mb-3">
-                    <label for="inputCurp" class="form-label">CURP del paciente *</label>
-                    <a href="https://www.gob.mx/curp/" target="_blank">Consultar CURP</a>
-                    <input type="text" class="form-control" id="inputCurp">
+                <div class="col-6 mb-3">
+                    <label class="form-label" for="inputNombreDoctor">Nombre Completo: *</label>
+                    <input class="form-control" id="inputNombreDoctor" placeholder="Dr. Nombre(s) Apellidos">
                 </div>
-
-                <div class="col-4 mb-3">
-                    <label for="inputDepartamento" class="form-label">Especialidad *</label>
-                    <select class="form-select" id="inputDepartamento">
-                        <option value="">Selecciona una opción</option>
+                <div class="col-6 mb-3">
+                    <label class="form-label" for="inputEspecialidadDoctor">Especialidad *</label>
+                    <select class="form-select" id="inputEspecialidadDoctor">
+                        <option value="">Selecciona especialidad</option>
                         <option>Medicina General</option>
                         <option>Pediatría</option>
                         <option>Ginecología</option>
                         <option>Urgencias</option>
                     </select>
                 </div>
-
-                <div class="col-4 mb-3">
-                    <label for="inputFecha" class="form-label">Fecha *</label>
-                    <input class="form-control" type="date" id="inputFecha">
-                </div>
-
-            </div>
-
-            <div class="row">
-                <div class="col-4 mb-3">
-                    <label for="inputHora" class="form-label">Hora *</label>
-                    <input class="form-control" type="time" id="inputHora">
-                </div>
-                <div class="col-4 mb-3">
-                    <label for="inputMotivo" class="form-label">Nota</label>
-                    <textarea class="form-control" id="inputMotivo" rows="1" style="resize:none"></textarea>
-                </div>
             </div>
 
             <div class="row text-end">
                 <div class="d-flex gap-4 justify-content-end">
                     <button type="button" class="btn btn-secondary" id="btnCancelar">Cancelar</button>
-                    <button type="submit" class="btn btn-primary" id="btnGuardar">Agendar</button>
+                    <button type="submit" class="btn btn-primary" id="btnGuardarDoctor">Guardar</button>
                 </div>
             </div>
 
@@ -98,21 +70,19 @@
     <div class="container">
         <div class="row">
             <div class="col-6 text-start">
-                <h4>Citas registradas</h4>
+                <h4>Doctores registrados</h4>
             </div>
             <div class="col-6 text-end">
                 <button type="button" class="btn btn-primary" id="btnRegistrar">Registrar</button>
             </div>
         </div>
-        <table id="dataTableCitas" class="table table-responsive table-striped table-bordered">
+        <table id="dataTableDoctores" class="table table-responsive table-striped table-bordered">
             <thead>
                 <tr>
                     <th>#</th>
-                    <th>Paciente</th>
+                    <th>Nombre</th>
                     <th>Especialidad</th>
-                    <th>Fecha</th>
-                    <th>Hora</th>
-                    <th>Estado</th>
+                    <th>Disponibilidad</th>
                 </tr>
             </thead>
             <tbody id="dataTableBody"></tbody>
@@ -121,7 +91,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/2.3.4/js/dataTables.js"></script>
-    <script src="js/citas.js"></script>
+    <script src="js/doctores.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>

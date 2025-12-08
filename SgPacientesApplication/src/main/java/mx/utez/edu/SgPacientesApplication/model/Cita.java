@@ -1,32 +1,27 @@
 package mx.utez.edu.SgPacientesApplication.model;
 
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.time.LocalTime;
+
+@Entity
+@Table(name = "citas")
 public class Cita {
-    private Long id;
-    private String pacienteCurp;
-    private String departamento;
-    private String fechaHora; // ISO datetime e.g. 2025-11-20T10:30
-    private String motivo;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Getter private Long id;
+    @Getter @Setter private String pacienteCurp;
+    @Getter private String departamento;
+    @Getter private String fecha; // ISO datetime e.g. 2025-11-20T10:30
+    @Getter private LocalTime hora;
+    @Getter private String motivo;
+    @Getter @Setter
     private String estado; // SOLICITADA, ATENDIDA, CANCELADA
 
     public Cita() {}
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
-    public String getPacienteCurp() { return pacienteCurp; }
-    public void setPacienteCurp(String pacienteCurp) { this.pacienteCurp = pacienteCurp; }
-
-    public String getDepartamento() { return departamento; }
-    public void setDepartamento(String departamento) { this.departamento = departamento; }
-
-    public String getFechaHora() { return fechaHora; }
-    public void setFechaHora(String fechaHora) { this.fechaHora = fechaHora; }
-
-    public String getMotivo() { return motivo; }
-    public void setMotivo(String motivo) { this.motivo = motivo; }
-
-    public String getEstado() { return estado; }
-    public void setEstado(String estado) { this.estado = estado; }
 
     @Override
     public String toString() {
@@ -34,7 +29,8 @@ public class Cita {
                 "id=" + id +
                 ", pacienteCurp='" + pacienteCurp + '\'' +
                 ", departamento='" + departamento + '\'' +
-                ", fechaHora='" + fechaHora + '\'' +
+                ", fecha='" + fecha + '\'' +
+                ", hora=" + hora +
                 ", motivo='" + motivo + '\'' +
                 ", estado='" + estado + '\'' +
                 '}';

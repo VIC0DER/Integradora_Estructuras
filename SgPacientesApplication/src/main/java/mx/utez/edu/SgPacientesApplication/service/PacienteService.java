@@ -1,5 +1,6 @@
 package mx.utez.edu.SgPacientesApplication.service;
 
+import mx.utez.edu.SgPacientesApplication.component.MemoryStore;
 import mx.utez.edu.SgPacientesApplication.model.HistorialEntry;
 import mx.utez.edu.SgPacientesApplication.model.Paciente;
 import mx.utez.edu.SgPacientesApplication.structures.ListaSimple;
@@ -7,59 +8,41 @@ import mx.utez.edu.SgPacientesApplication.structures.MyHashMap;
 import mx.utez.edu.SgPacientesApplication.structures.Pila;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 public class PacienteService {
+    private MemoryStore memoryStore;
 
-    private final ListaSimple<Paciente> pacientes = new ListaSimple<>(); // lista de pacientes
-    private final MyHashMap<String, Paciente> mapPorCurp = new MyHashMap<>(); // mapa por CURP
     private final Map<String, List<HistorialEntry>> historiales = new HashMap<>(); // historiales por CURP
     private final Pila<HistorialEntry> pilaGlobal = new Pila<>(); // pila global
-    private long seq = 1L; // id incremental
+
+    public PacienteService(MemoryStore memoryStore) {
+        this.memoryStore = memoryStore;
+    }
 
     public Paciente save(Paciente p) {
-        if (p.getId() == null) p.setId(seq++); // asigna id
-
-
-        Paciente prev = mapPorCurp.get(p.getCurp()); // busca previo
-        if (prev != null) {
-            pacientes.remove(prev); // elimina previo
-        }
-
-
-        pacientes.add(p); // agrega paciente
-        mapPorCurp.put(p.getCurp(), p); // actualiza mapa
-
-
-        HistorialEntry e = new HistorialEntry(p.getCurp(), LocalDateTime.now(), "Paciente registrado/actualizado"); // crea historial
-        historiales.computeIfAbsent(p.getCurp(), k -> new ArrayList<>()).add(e); // agrega historial
-        pilaGlobal.push(e); // agrega a pila global
+        memoryStore.guardarPaciente(p);
         return p; // devuelve
     }
 
     public Paciente findByCurp(String curp) {
-        return mapPorCurp.get(curp); // busca por CURP
+        return memoryStore.getMapPorCurp().get(curp.toLowerCase()); // busca por CURP
     }
 
     public MyHashMap<String, Object> findAll() {
         MyHashMap<String, Object> mapResponse = new MyHashMap<>();
-        mapResponse.put("listaPacientes", pacientes);
+        mapResponse.put("listaPacientes", memoryStore.getPacientes());
         return mapResponse; // devuelve copia
     }
 
     public boolean deleteById(Long id) {
+        ListaSimple<Paciente> pacientes = memoryStore.getPacientes();
         Optional<Paciente> opt = pacientes.stream().filter(p -> Objects.equals(p.getId(), id)).findFirst(); // busca
         if (opt.isEmpty()) return false; // no encontrado
         Paciente p = opt.get();
-        pacientes.remove(p); // elimina
-        mapPorCurp.remove(p.getCurp()); // elimina del mapa
-        historiales.remove(p.getCurp()); // elimina historial
-        HistorialEntry e = new HistorialEntry(p.getCurp(), LocalDateTime.now(), "Paciente eliminado"); // registra eliminación
-        pilaGlobal.push(e); // agrega a pila
-        System.out.println(pacientes);
+        memoryStore.eliminarPaciente(p);
         return true; // éxito
     }
 

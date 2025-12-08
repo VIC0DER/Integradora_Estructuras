@@ -2,13 +2,22 @@ package mx.utez.edu.SgPacientesApplication.structures;
 
 import java.util.*;
 
+/**
+ * Esta clase es utilizada para mandar información en las respuestas HTTP.
+ * @param <K> Tipo de objeto utilizado como clave para acceder al valor.
+ * @param <V> Tipo de objeto para almacenar valores.
+ */
 public class MyHashMap<K, V> extends AbstractMap<K, V> {
 
     // Factor de carga (cuando redimensionar)
     private static final float LOAD_FACTOR = 0.75f;
     private static final int INITIAL_CAPACITY = 16;
 
-    // Cada Entry representa un nodo de la lista enlazada
+    /**
+     * Esta clase interna es equivalente a la clase {@code Node} en listas enlazadas.
+     * @param <K> Clave del mismo tipo a la de la clase externa.
+     * @param <V> Valor del mismo tipo a la de la clase externa.
+     */
     private static class Entry<K, V> implements Map.Entry<K, V>{
         K key;
         V value;
@@ -42,12 +51,21 @@ public class MyHashMap<K, V> extends AbstractMap<K, V> {
         table = new Entry[INITIAL_CAPACITY];
     }
 
-    // Calcula el índice
+    /**
+     * Obtiene el índice dada una clave.
+     * @param key objeto utilizado como clave para {@link Entry}.
+     * @return índice calculado con el hashCode de la clave.
+     */
     private int index(Object key) {
         return (key == null) ? 0 : Math.abs(key.hashCode()) % table.length;
     }
 
-    // Inserta o actualiza una clave
+    /**
+     * Inserta un valor especificado dada una clave.
+     * @param key clave con la que el valor especificado es asociado.
+     * @param value valor con el que la clave es asociada.
+     * @return {@code null} si la clave es nueva o el viejo valor si ya existe.
+     */
     @Override
     public V put(K key, V value) {
         int index = index(key);

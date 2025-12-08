@@ -1,39 +1,68 @@
 package mx.utez.edu.SgPacientesApplication.service;
 
+import mx.utez.edu.SgPacientesApplication.component.MemoryStore;
 import mx.utez.edu.SgPacientesApplication.model.Cita;
+import mx.utez.edu.SgPacientesApplication.model.Paciente;
 import mx.utez.edu.SgPacientesApplication.structures.Cola;
 import mx.utez.edu.SgPacientesApplication.structures.ListaSimple;
+import mx.utez.edu.SgPacientesApplication.structures.MyHashMap;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CitaService {
+    private final MemoryStore memoryStore;
 
-    private final ListaSimple<Cita> citas = new ListaSimple<>(); // lista de citas
-    private final Cola<String> colaAtencion = new Cola<>(); // cola de atención por curp
-    private long seq = 1L; // secuencia de ids
+
+    public CitaService(MemoryStore memoryStore) {
+        this.memoryStore = memoryStore;
+    }
 
     public Cita save(Cita c) {
-        if (c.getId() == null) c.setId(seq++); // asigna id
         if (c.getEstado() == null) c.setEstado("SOLICITADA"); // estado inicial
-        citas.add(c); // agrega a lista
-        if (c.getPacienteCurp() != null) colaAtencion.enqueue(c.getPacienteCurp()); // agrega a cola
+        memoryStore.guardarCita(c);
         return c; // devuelve cita
     }
 
-    public ListaSimple<Cita> findAll() {
-        return citas; // devuelve copia de lista
+    public MyHashMap<String, Object> findAll() {
+        MyHashMap<String, Object> response = new MyHashMap<>();
+        ListaSimple<Cita> citas = memoryStore.getCitas();
+        Cola<Cita> citasActivas = memoryStore.getCitasActivas();
+        Object[] citasActuales = new Object[citasActivas.size()];
+        System.arraycopy(
+                citasActivas.getArr(),
+                citasActivas.getHead(),
+                citasActuales, 0,
+                citasActuales.length
+        );
+        response.put("citasActuales", citasActuales);
+        response.put("listaCitas", citas);
+        return response;
     }
 
-    public Cita atenderSiguiente() {
-        String curp = colaAtencion.dequeue(); // obtiene siguiente curp
-        if (curp == null) return null; // si no hay
-        for (Cita c : citas) {
-            if (curp.equals(c.getPacienteCurp()) && "SOLICITADA".equalsIgnoreCase(c.getEstado())) {
-                c.setEstado("ATENDIDA"); // marca atendida
-                return c; // devuelve cita atendida
-            }
-        }
-        return null; // no encontrada
+    public MyHashMap<String, Object> atenderSiguiente() {
+        MyHashMap<String, Object> response = new MyHashMap<>();
+        int code = memoryStore.atenderCita();
+        String mensaje = switch(code) {
+            case 200 -> "Cita atendida con éxito";
+            case 404 -> "Registros no encontrados";
+            default -> "Ocurrió un error inesperado";
+        };
+        response.put("mensaje", mensaje);
+        response.put("code", code);
+        return response;
     }
-    public int colaSize() { return colaAtencion.size(); } // tamaño de la cola
+
+    public MyHashMap<String, Object> buscarPorPaciente(Long idPaciente) {
+        MyHashMap<String, Object> response = new MyHashMap<>();
+        Paciente paciente = memoryStore.fetchPaciente(idPaciente);
+        if (paciente != null) {
+            response.put("historialCitas", memoryStore.obtenerCitasPorPaciente(paciente));
+            response.put("mensaje", "Historial de citas cargado con éxito.");
+            response.put("code", 200);
+        } else {
+            response.put("mensaje", "No se pudo encontrar al paciente.");
+            response.put("code", 404);
+        }
+        return response;
+    }
 }

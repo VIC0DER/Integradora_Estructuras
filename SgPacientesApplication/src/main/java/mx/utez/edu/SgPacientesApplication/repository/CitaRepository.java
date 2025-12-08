@@ -1,40 +1,16 @@
 package mx.utez.edu.SgPacientesApplication.repository;
 
 import mx.utez.edu.SgPacientesApplication.model.Cita;
+import mx.utez.edu.SgPacientesApplication.structures.ListaSimple;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.LinkedList;
-import java.util.Queue;
-
 @Repository
-public class CitaRepository {
-
-    // Cola FIFO para manejo de citas
-    private final Queue<Cita> citas = new LinkedList<>();
-
-    // Agregar una cita al final de la cola
-    public Cita save(Cita c) {
-        citas.offer(c);  // agrega al final
-        return c;
-    }
-
-    // Ver la siguiente cita sin eliminarla
-    public Cita peekNext() {
-        return citas.peek(); // null si está vacío
-    }
-
-    // Atender una cita (sacar la primera en entrar)
-    public Cita pollNext() {
-        return citas.poll();
-    }
-
-    // Obtener todas las citas (como lista)
-    public Queue<Cita> findAll() {
-        return citas;
-    }
-
-    // Cancelar una cita por ID
-    public void deleteById(Long id) {
-        citas.removeIf(c -> c.getId().equals(id));
-    }
+public interface CitaRepository extends JpaRepository<Cita, Long> {
+    ListaSimple<Cita> findByOrderByFechaDescHoraAsc();
+    ListaSimple<Cita> findByFechaOrderByHoraAsc(String fecha);
+    @Query("SELECT c FROM Cita c WHERE c.pacienteCurp = :curp ORDER BY c.fecha DESC, c.hora DESC")
+    ListaSimple<Cita> findByCurp(@Param("curp") String curp);
 }

@@ -1,11 +1,17 @@
 package mx.utez.edu.SgPacientesApplication.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "pacientes")
 public class Paciente {
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nombre;
     private String apellidos;
     private String sexo;
     private String nacimiento; // ISO date e.g. 1990-01-01
+    @Column(unique = true, nullable = false, length = 18)
     private String curp;
     private String nss;
     private String telefono;

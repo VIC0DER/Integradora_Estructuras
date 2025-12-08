@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.4/css/dataTables.dataTables.css" />
+    <link rel="stylesheet" href="css/styles.css"/>
+    <title>Urgencias</title>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="#">Logo</a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="nav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="registro.html">Pacientes</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="citas.html">Agendar Cita</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="urgencias.html">Urgencias</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="doctores.html">Doctores</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="container" id="formContainer">
+        <form id="formRegistro">
+            <h3>Atención médica de urgencias</h3>
+            <hr>
+
+            <div class="row">
+                <div class="col-6 mb-3">
+                    <label class="form-label" for="inputCurp">CURP del paciente *</label>
+                    <input class="form-control" id="inputCurp" placeholder="Clave de 18 carácteres">
+                </div>
+                <div class="col-6 mb-3">
+                    <label class="form-label" for="selectDoctor">Doctor </label>
+                    <select class="form-select" id="selectDoctor">
+                        <option value="0">Seleccionar Doctor...</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row">
+                <label for="prioridadAlta" class="form-label">Nivel de prioridad *</label>
+                <div class="col-4 mb-3">
+                    <div class="prioridad">
+                        <input type="radio" name="prioridad" id="prioridadAlta" value="1">
+                        <label class="high-priority priority-label d-flex justify-content-center align-items-center" for="prioridadAlta">Atención Inmediata</label>
+                    </div>
+                </div>
+                <div class="col-4 mb-3">
+                    <div class="prioridad">
+                        <input type="radio" name="prioridad" id="prioridadMedia" value="2">
+                        <label class="emergency priority-label d-flex justify-content-center align-items-center" for="prioridadMedia">Emergencia</label>
+                    </div>
+                </div>
+                <div class="col-4 mb-3">
+                    <div class="prioridad">
+                        <input type="radio" name="prioridad" id="prioridadMediaBaja" value="3">
+                        <label class="urgent priority-label d-flex justify-content-center align-items-center" for="prioridadMediaBaja">Urgencia Moderada</label>
+                    </div>
+                </div>            
+            </div>
+            <div class="row">
+                <div class="col-6 mb-3">
+                    <div class="prioridad">
+                        <input type="radio" name="prioridad" id="prioridadBajaAlta" value="4">
+                        <label class="low-priority priority-label d-flex justify-content-center align-items-center" for="prioridadBajaAlta">Urgencia Menor</label>
+                    </div>
+                </div>
+                <div class="col-6 mb-3">
+                    <div class="prioridad">
+                        <input type="radio" name="prioridad" id="prioridadBaja" value="5">
+                        <label class="safe priority-label d-flex justify-content-center align-items-center" for="prioridadBaja">No Urgente</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row text-end">
+                <div class="d-flex gap-4 justify-content-end">
+                    <button type="button" class="btn btn-secondary" id="btnCancelar">Cancelar</button>
+                    <button type="button" class="btn btn-primary" id="btnGuardar">Guardar</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+    <div class="container">
+        <div class="row" style="margin-bottom: 10px;">
+            <div class="col-6 text-start">
+                <h4>Registros de Atención Médica</h4>
+            </div>
+            <div class="col-6 text-end">
+                <button type="button" class="btn btn-primary" id="btnRegistrar">Registrar</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col text-start">
+                <div class="d-flex gap-4 justify-contend-start">
+                    <button class="btn btn-danger" id="btnVerActivas">Activas</button>
+                    <button class="btn btn-success" id="btnVerAtendidas">Atendidas</button>
+                </div>
+            </div>
+        </div>
+        <div class="row" id="card-container" style="margin-top: 20px;"></div>
+        <div class="row" id="atendidas-container" style="margin-top: 20px;"></div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/2.3.4/js/dataTables.js"></script>
+    <script src="js/urgencias.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
