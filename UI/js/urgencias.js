@@ -93,7 +93,7 @@ async function cargarContenido(){
                     `
                         <div class="card-body">
                             <h5 class="card-title">CURP: ${urgencia.pacienteCurp}</h5>
-                            <p class="card-text">${urgencia.doctor == null ? "Sin Doctor" : urgencia.doctor.nombre}</p>
+                            <p class="card-text">${urgencia.doctor == null ? "<button class='btn btn-primary'>Aisgnar doctor</button>" : urgencia.doctor.nombre}</p>
                             <p class="card-text">Prioridad: ${mensaje}</p>
                         </div>    
                     `;
@@ -114,6 +114,7 @@ async function cargarContenido(){
                         <div class="card-body">
                             <h5 class="card-title">CURP: ${urgencia.pacienteCurp}</h5>
                             <p class="card-text">${urgencia.doctor.nombre}</p>
+                            <p class="card-text">${urgencia.fechaDeAlta}</p>
                         </div>    
                     `;
                     col.appendChild(card);
@@ -131,29 +132,35 @@ let atenderUrgencia = setInterval(async () => {
     if(registroUrgencias.length > 0){
         console.log(registroUrgencias.length);
         console.log("Atendiendo urgencia con prioridad "+registroUrgencias[0].prioridad);
-        let doctor = registroUrgencias[0].doctor;   
-        const response = await fetch(
-            `http://localhost:8080/api/doctores/${doctor.id}/${1}`,
-            {
-                method: 'PATCH',
-                headers: {
-                    "Content-Type": "application/json",
+        let doctor = registroUrgencias[0].doctor;
+        if(doctor != null){
+            const response = await fetch(
+                `http://localhost:8080/api/doctores/${doctor.id}/${1}`,
+                {
+                    method: 'PATCH',
+                    headers: {
+                        "Content-Type": "application/json",
+                    }
                 }
-            }
-        )
-        
-        const responseUrgencia = await fetch(
-            `http://localhost:8080/api/urgencias/${registroUrgencias[0].id}/atendida`,
-            {
-                method: 'PATCH',
-                headers: {
-                    "Content-Type": "application/json",
+            )
+            const responseUrgencia = await fetch(
+                `http://localhost:8080/api/urgencias/${registroUrgencias[0].id}/atendida`,
+                {
+                    method: 'PATCH',
+                    headers: {
+                        "Content-Type": "application/json",
+                    }
                 }
+            )
+            if(responseUrgencia.ok && response.ok){
+                cargarContenido();
             }
-        )
-        if(responseUrgencia.ok && response.ok){
-            cargarContenido();
+        }else{
+            
         }
+
+        
+
     }
 
     

@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalTime;
+import java.util.Objects;
 
 @Entity
 @Table(name = "citas")
@@ -19,6 +20,10 @@ public class Cita {
     @Getter private String motivo;
     @Getter @Setter
     private String estado; // SOLICITADA, ATENDIDA, CANCELADA
+    @Getter @Setter
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "doctor_id")
+    private Doctor doctor;
 
     public Cita() {}
 
@@ -34,5 +39,17 @@ public class Cita {
                 ", motivo='" + motivo + '\'' +
                 ", estado='" + estado + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Cita cita = (Cita) o;
+        return Objects.equals(id, cita.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
     }
 }

@@ -12,11 +12,10 @@ import java.util.Objects;
 
 public class ListaSimple<E> extends AbstractList<E> {
     private Object[] data;
-    private int size;
+    private int size = 0;
 
     public ListaSimple() {
         data = new Object[16];
-        size = 0;
     }
     /** Este metodo se encarga de redimensionar el arreglo que almacena los elementos. */
     private void ensure() {
@@ -113,5 +112,6 @@ public class ListaSimple<E> extends AbstractList<E> {
 
     @Override
     public int size() { return size; }
+    public boolean isEmpty() { return size == 0; }
 
 }

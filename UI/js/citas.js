@@ -2,7 +2,7 @@ const btnGuardar = document.getElementById("btnGuardar");
 const btnCancelar = document.getElementById("btnCancelar");
 const btnRegistrar = document.getElementById("btnRegistrar");
 const formContainer = document.getElementById("formContainer");
-
+let citasActivas = [];
 // Inicializa la tabla de citas
 document.addEventListener("DOMContentLoaded", obtenerCitas);
 // Muestra el formulario de registro de doctores
@@ -68,7 +68,7 @@ async function obtenerCitas() {
     tableCitas = new DataTable('#dataTableCitas', {
         ajax: {
             url: "http://localhost:8080/api/citas",
-            dataSrc: "citasActuales"
+            dataSrc: "listaCitas"
         },
         language: {
             loadingRecords: "Cargando...",
@@ -95,7 +95,11 @@ async function obtenerCitas() {
             { data: "departamento" },
             { data: "fecha" },
             { data: "hora" },
-            { data: "estado" },
+            {   data: null,
+                render: (data, type, row, meta) => {
+                    return `<b class="${pintarEtiquetaEstado(row.estado)}" data-id="${row.id}">${row.estado}</b>`
+                }
+            },
             /*{
                 data: null,
                 render: (data, type, row, meta) => {
@@ -104,4 +108,11 @@ async function obtenerCitas() {
             },*/
         ]
     })
+}
+function pintarEtiquetaEstado(estado) {
+    switch(estado.toLowerCase()){
+        case 'solicitada': return 'text-primary';
+        case 'atendida': return 'text-success';
+        case 'cancelada': return 'text-danger';
+    }
 }

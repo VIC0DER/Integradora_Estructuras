@@ -8,6 +8,35 @@
     <link rel="stylesheet" href="css/styles.css"/>
     <title>Urgencias</title>
 </head>
+<style>
+    input[type="radio"] {
+        display: none;
+    }
+    .prioridad:has(input[type="radio"]:checked) {
+        border-color: #000;
+        background-color: #e0e0e0;
+    }
+    .priority-label {
+        font-weight: bold;
+        width: 100%;
+        height: 100%;
+    }
+    .high-priority {
+        color: #ff4d4d;
+    }
+    .emergency {
+        color: #ff8800;
+    }
+    .urgent {
+        color: #ffcc00;
+    }
+    .safe {
+        color: #3399ff;
+    }
+    .low-priority {
+        color: #33cc33;
+}
+</style>
 <body>
 
     <nav class="navbar navbar-expand-lg bg-body-tertiary">

@@ -74,6 +74,12 @@ dataTableBody.addEventListener('click', async (event) => {
             modalBody.innerHTML = '';
             citas.forEach(cita => {
                 if(cita != null){
+                    let textClass = "";
+                    switch(cita.estado.toLowerCase()){
+                        case 'solicitada': textClass = 'text-primary'; break;
+                        case 'atendida': textClass = 'text-success'; break;
+                        default: textClass = 'text-primary'; break;
+                    }
                     const card = document.createElement("div");
                     card.className = "card mb-3";
                     card.innerHTML = 
@@ -81,6 +87,7 @@ dataTableBody.addEventListener('click', async (event) => {
                         <div class="card-body">
                             <h5 class="card-title">Fecha de atención:</h5>
                             <p class="card-text">${cita.fecha} ${cita.hora}</p>
+                            <p class="card-text ${textClass}"><b>${cita.estado}</b></p>
                         </div>    
                     `;
                     modalBody.appendChild(card);

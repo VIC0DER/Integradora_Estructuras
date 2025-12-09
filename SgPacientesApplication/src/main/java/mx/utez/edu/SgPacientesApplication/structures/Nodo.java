@@ -2,7 +2,7 @@ package mx.utez.edu.SgPacientesApplication.structures;
 
 public class Nodo<E> {
     protected E value;
-    //protected Nodo<E> next;
+    protected Nodo<E> next;
 
     public Nodo(E value){
         this.value = value;

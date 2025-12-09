@@ -15,7 +15,9 @@ import mx.utez.edu.SgPacientesApplication.structures.*;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Optional;
+import java.util.Random;
 
 /**
     Esta clase se encarga de obtener información de la base de datos
@@ -80,15 +82,16 @@ public class MemoryStore {
         }
         citas = citaRepository.findByOrderByFechaDescHoraAsc();
         ListaSimple<Cita> citasActuales = citaRepository.findByFechaOrderByHoraAsc(
-                LocalDate.now().toString()
+                LocalDate.now().toString(),
+                "SOLICITADA"
         );
         for(Cita cita : citasActuales){
             citasActivas.enqueue(cita);
         }
         doctores.addAll(doctorRepository.findAll());
-        doctoresUrgencias.addAll(doctorRepository.buscarDisponibles("Urgencias"));
-        urgenciasHeap.insert(urgenciaRepository.getUrgenciaAndDoctor(false));
-        urgenciasAtendidas.push(urgenciaRepository.getUrgenciaAndDoctor(true));
+        doctoresUrgencias.addAll(doctorRepository.buscarDisponibles("Urgencias", true));
+        urgenciasHeap.insert(urgenciaRepository.getUrgenciaAndDoctor());
+        urgenciasAtendidas.push(urgenciaRepository.getAtendidas());
     }
 
     /**
@@ -123,9 +126,13 @@ public class MemoryStore {
      * @param cita instancia a guardar.
      */
     public void guardarCita(Cita cita) {
-        cita.setPacienteCurp(cita.getPacienteCurp().toLowerCase());
+        cita.setPacienteCurp(cita.getPacienteCurp());
         Cita guardado = citaRepository.save(cita);
         citas.add(guardado);
+        LocalDate fecha = LocalDate.parse(cita.getFecha());
+        if(fecha.isEqual(LocalDate.now())) {
+            citasActivas.enqueue(cita);
+        }
     }
 
     /**
@@ -134,10 +141,18 @@ public class MemoryStore {
      * {@code 404} si cualquiera de los dos registros no se encontró.
      */
     public int atenderCita() {
+        if(citasActivas.isEmpty()) return 404;
         Cita cita = citasActivas.peek();
+        System.out.println(cita);
         Optional<Cita> existente = citaRepository.findById(cita.getId());
         Optional<Paciente> paciente = pacienteRepository.findByCurp(cita.getPacienteCurp());
-        if(existente.isPresent() && paciente.isPresent()) {
+        ListaSimple<Doctor> doctores = doctorRepository.buscarDisponibles(cita.getDepartamento().toLowerCase(), true);
+        System.out.println(doctores.size());
+        if(existente.isPresent() && paciente.isPresent() && doctores.size() > 0) {
+            Random  random = new Random();
+            Doctor doctor = doctores.get(random.nextInt(doctores.size()));
+            cita.setDoctor(doctor);
+            actualizarDisponible(doctor, 0);
             cita.setEstado("ATENDIDA");
             citaRepository.save(cita);
             citasActivas.dequeue();
@@ -234,13 +249,17 @@ public class MemoryStore {
             return 404;
         }
         Urgencia urgencia = urgencyOpt.get();
+        LocalDateTime momentoRegistro = LocalDateTime.now();
+        urgencia.setFechaDeAlta(momentoRegistro);
         urgencia.setAtendida(true);
         try {
             urgenciaRepository.save(urgencia);
         } catch (Exception ex) {
             return 404;
         }
-        urgenciasAtendidas.push(urgenciasHeap.remove());
+        Urgencia atendida = urgenciasHeap.remove();
+        atendida.setFechaDeAlta(momentoRegistro);
+        urgenciasAtendidas.push(atendida);
         return 200;
     }
 }
