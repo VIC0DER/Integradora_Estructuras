@@ -146,11 +146,12 @@ public class MemoryStore {
         System.out.println(cita);
         Optional<Cita> existente = citaRepository.findById(cita.getId());
         Optional<Paciente> paciente = pacienteRepository.findByCurp(cita.getPacienteCurp());
-        ListaSimple<Doctor> doctores = doctorRepository.buscarDisponibles(cita.getDepartamento().toLowerCase(), true);
+        ListaSimple<Doctor> doctores = doctorRepository.buscarDisponibles(cita.getDepartamento(), true);
         System.out.println(doctores.size());
         if(existente.isPresent() && paciente.isPresent() && doctores.size() > 0) {
             Random  random = new Random();
             Doctor doctor = doctores.get(random.nextInt(doctores.size()));
+
             cita.setDoctor(doctor);
             actualizarDisponible(doctor, 0);
             cita.setEstado("ATENDIDA");
@@ -168,7 +169,7 @@ public class MemoryStore {
      * @return Lista de citas registradas del paciente {@code ListaSimple<Cita>}.
      */
     public ListaSimple<Cita> obtenerCitasPorPaciente(Paciente paciente) {
-        return citaRepository.findByCurp(paciente.getCurp().toLowerCase());
+        return citaRepository.findByCurp(paciente.getCurp());
     }
     /**
      * Este metodo guarda una instancia de {@code Doctor} en la base de datos.

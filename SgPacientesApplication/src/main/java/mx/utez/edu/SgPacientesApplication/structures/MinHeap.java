@@ -47,11 +47,11 @@ public class MinHeap {
         }
     }
     private void heapifyUp(int index){
-        while(index > 0 && heap[index].getPrioridad() <  heap[getParent(index)].getPrioridad()) {
+        if(index > 0 && heap[index].getPrioridad() <  heap[getParent(index)].getPrioridad()) {
             Urgencia temp = heap[index];
             heap[index] = heap[getParent(index)];
             heap[getParent(index)] = temp;
-            index = getParent(index);
+            heapifyUp(getParent(index));
         }
     }
     /**

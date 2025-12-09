@@ -42,8 +42,8 @@ document.getElementById("formCita").addEventListener("submit", async (e) => {
 // Simula la atención de citas 
 let atenderCita = setInterval(async () => {
     let table = $('#dataTableCitas').DataTable();
-    let cantidadRegistros = table.data().count();
-    if(cantidadRegistros > 0){
+    //let cantidadRegistros = table.data().count();
+    //if(cantidadRegistros > 0){
         const response = await fetch(
             `http://localhost:8080/api/citas/atender-siguiente`,
             {
@@ -59,7 +59,7 @@ let atenderCita = setInterval(async () => {
             const responseJson = await response.json();
             console.log(responseJson.mensaje);
         }
-    }
+    //}
 }, 10000);
 
 let tableCitas = null;
