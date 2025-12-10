@@ -45,7 +45,7 @@ public class MemoryStore {
     private final MyHashMap<String, Paciente> mapPorCurp;
     /** Lista de doctores del departamento de urgencias. */
     @Getter
-    private final ListaSimple<Doctor> doctoresUrgencias;
+    private ListaSimple<Doctor> doctoresUrgencias;
     /** Nos permite gestionar la atención a urgencias. */
     @Getter
     private final MinHeap urgenciasHeap;
@@ -89,7 +89,7 @@ public class MemoryStore {
             citasActivas.enqueue(cita);
         }
         doctores.addAll(doctorRepository.findAll());
-        doctoresUrgencias.addAll(doctorRepository.buscarDisponibles("Urgencias", true));
+        doctoresUrgencias = doctorRepository.buscarDisponibles("Urgencias", true);
         urgenciasHeap.insert(urgenciaRepository.getUrgenciaAndDoctor());
         urgenciasAtendidas.push(urgenciaRepository.getAtendidas());
     }

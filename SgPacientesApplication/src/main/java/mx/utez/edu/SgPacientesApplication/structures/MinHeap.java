@@ -46,6 +46,12 @@ public class MinHeap {
             heapifyUp(size - 1);
         }
     }
+
+    /**
+     * Compara la prioridad de {@link Urgencia} de {@code heap[index]} con su padre
+     * para determinar si se debe volver a ordenar.
+     * @param index posición desde donde se quiere empezar a ordenar.
+     */
     private void heapifyUp(int index){
         if(index > 0 && heap[index].getPrioridad() <  heap[getParent(index)].getPrioridad()) {
             Urgencia temp = heap[index];
@@ -65,6 +71,13 @@ public class MinHeap {
         heapifyDown(0);
         return root;
     }
+
+    /**
+     * <p>Compara la prioridad de {@code heap[index]} con sus dos hijos actuales
+     * para determinar si se debe volver a ordenar mediante intercambios de valores.</p>
+     * <p>En caso de que la prioridad coincida, se considera el orden de inserción.</p>
+     * @param index posición desde donde se quiere empezar a ordenar.
+     */
     private void heapifyDown(int index){
         while(true) {
             int left = getLeftChild(index);
@@ -80,6 +93,13 @@ public class MinHeap {
             heap[smallest] = temp;
         }
     }
+
+    /**
+     * Compara dos posiciones de {@code Urgencia[] heap} para determinar cuál debería ir primero.
+     * @param index posición a ser comparada
+     * @param reference posición de referencia para comparar
+     * @return {@code index} o {@code reference}, en función de qué posición tiene mayor prioridad, u orden de inserción en caso de misma prioridad.
+     */
     private int getSmallest(int index, int reference) {
         if(index < size) {
             if(heap[index].getPrioridad() < heap[reference].getPrioridad()) {

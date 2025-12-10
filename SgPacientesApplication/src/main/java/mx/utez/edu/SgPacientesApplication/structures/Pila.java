@@ -17,7 +17,9 @@ public class Pila<T> {
         arr = new Object[10];
         size = 0;
     }
-
+    /**
+     * Redimensiona la pila cuando alcanza su capacidad máxima.
+     */
     private void ensure() {
         if (size >= arr.length) {
             Object[] n = new Object[arr.length * 2];
@@ -25,7 +27,11 @@ public class Pila<T> {
             arr = n;
         }
     }
-
+    /**
+     * Este metodo utiliza {@code ensure()} para garantizar que los elementos quepan en la pila.
+     * Desplaza los elementos existentes una posición y le asigna el nuevo elemento a {@code arr[0]} y aumenta {@code size}.
+     * @param item elemento a ser agregado.
+     */
     public void push(T item) {
         ensure();
         if(isEmpty()){
@@ -36,6 +42,11 @@ public class Pila<T> {
         arr[0] = item;
         size++;
     }
+    /**
+     * Este metodo itera una {@code ListaSimple<T>}, utiliza {@code ensure()} para garantizar que los elementos quepan en la pila.
+     * Desplaza los elementos existentes una posición y le asigna el nuevo elemento a {@code arr[0]} y aumenta {@code size}.
+     * @param items {@code ListaSimple<T>} elementos a ser agregados.
+     */
     public void push(ListaSimple<T> items){
         for (T item : items) {
             ensure();
@@ -48,7 +59,12 @@ public class Pila<T> {
             size++;
         }
     }
-
+    /**
+     * Obtiene y elimina la cima de la pila.
+     * Acerca el resto de valores a {@code arr[0]},
+     * elimina el último valor para evitar duplicados y decrementa {@code size}.
+     * @return el elemento al inicio de la cola.
+     */
     @SuppressWarnings("unchecked")
     public T pop() {
         if (isEmpty()) return null;
@@ -57,7 +73,10 @@ public class Pila<T> {
         arr[--size] = null;
         return v;
     }
-
+    /**
+     * Obtiene la cima de la pila, sin eliminar.
+     * @return el elemento en la cima de la pila.
+     */
     @SuppressWarnings("unchecked")
     public T peek() {
         return (T) arr[0];

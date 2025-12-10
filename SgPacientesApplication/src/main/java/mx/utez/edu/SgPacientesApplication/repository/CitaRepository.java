@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CitaRepository extends JpaRepository<Cita, Long> {
     ListaSimple<Cita> findByOrderByFechaDescHoraAsc();
-    @Query("SELECT c FROM Cita c WHERE c.fecha = :fecha AND c.estado = :estado ORDER BY c.fecha DESC, c.hora DESC")
+    @Query("SELECT c FROM Cita c WHERE c.fecha = :fecha AND c.estado = :estado ORDER BY c.fecha DESC, c.hora ASC")
     ListaSimple<Cita> findByFechaOrderByHoraAsc(
             @Param("fecha") String fecha,
             @Param("estado") String estado

@@ -1,22 +1,17 @@
 package mx.utez.edu.SgPacientesApplication.service;
 
 import mx.utez.edu.SgPacientesApplication.component.MemoryStore;
-import mx.utez.edu.SgPacientesApplication.model.HistorialEntry;
 import mx.utez.edu.SgPacientesApplication.model.Paciente;
 import mx.utez.edu.SgPacientesApplication.structures.ListaSimple;
 import mx.utez.edu.SgPacientesApplication.structures.MyHashMap;
-import mx.utez.edu.SgPacientesApplication.structures.Pila;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class PacienteService {
     private MemoryStore memoryStore;
-
-    private final Map<String, List<HistorialEntry>> historiales = new HashMap<>(); // historiales por CURP
-    private final Pila<HistorialEntry> pilaGlobal = new Pila<>(); // pila global
 
     public PacienteService(MemoryStore memoryStore) {
         this.memoryStore = memoryStore;
@@ -44,16 +39,5 @@ public class PacienteService {
         Paciente p = opt.get();
         memoryStore.eliminarPaciente(p);
         return true; // éxito
-    }
-
-    public List<HistorialEntry> getHistorial(String curp) {
-        return historiales.getOrDefault(curp, Collections.emptyList()) // obtiene lista
-                .stream()
-                .sorted(Comparator.comparing(HistorialEntry::getFecha).reversed()) // ordena desc
-                .collect(Collectors.toList()); // retorna lista
-    }
-
-    public HistorialEntry popUltimoHistorialDemo() {
-        return pilaGlobal.pop(); // saca último
     }
 }

@@ -164,7 +164,7 @@ let atenderUrgencia = setInterval(async () => {
     }
 
     
-}, 60000);
+}, 3000);
 
 // Muestra el formulario de registro de urgencias
 btnRegistrar.addEventListener("click", () => {
